@@ -3,7 +3,7 @@ const defaultSettings: AppSettings = {
   version: "v2.7.0",
   showSettings: true,
   tagsView: true,
-  fixedHeader: false,
+  fixedHeader: true,
   sidebarLogo: true,
   layout: "left",
   theme: "light",

@@ -29,19 +29,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     redirect: "/dashboard",
     children: [
       {
-        path: "dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
-        name: "Dashboard", // 用于 keep-alive, 必须与SFC自动推导或者显示声明的组件name一致
-        // https://cn.vuejs.org/guide/built-ins/keep-alive.html#include-exclude
-        meta: {
-          title: "dashboard",
-          icon: "homepage",
-          affix: true,
-          keepAlive: true,
-          alwaysShow: false,
-        },
-      },
-      {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
         meta: { hidden: true },
@@ -53,58 +40,150 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+];
 
-  // 外部链接
-  // {
-  //   path: "/external-link",
-  //   component: Layout,
-  //   children: [ {
-  //       component: () => import("@/views/external-link/index.vue"),
-  //       path: "https://www.cnblogs.com/haoxianrui/",
-  //       meta: { title: "外部链接", icon: "link" },
-  //     },
-  //   ],
-  // },
-  // 多级嵌套路由
-  /* {
-         path: '/nested',
-         component: Layout,
-         redirect: '/nested/level1/level2',
-         name: 'Nested',
-         meta: {title: '多级菜单', icon: 'nested'},
-         children: [
-             {
-                 path: 'level1',
-                 component: () => import('@/views/nested/level1/index.vue'),
-                 name: 'Level1',
-                 meta: {title: '菜单一级'},
-                 redirect: '/nested/level1/level2',
-                 children: [
-                     {
-                         path: 'level2',
-                         component: () => import('@/views/nested/level1/level2/index.vue'),
-                         name: 'Level2',
-                         meta: {title: '菜单二级'},
-                         redirect: '/nested/level1/level2/level3',
-                         children: [
-                             {
-                                 path: 'level3-1',
-                                 component: () => import('@/views/nested/level1/level2/level3/index1.vue'),
-                                 name: 'Level3-1',
-                                 meta: {title: '菜单三级-1'}
-                             },
-                             {
-                                 path: 'level3-2',
-                                 component: () => import('@/views/nested/level1/level2/level3/index2.vue'),
-                                 name: 'Level3-2',
-                                 meta: {title: '菜单三级-2'}
-                             }
-                         ]
-                     }
-                 ]
-             },
-         ]
-     }*/
+// 异步路由
+export const asyncRoutes: RouteRecordRaw[] = [
+  {
+    path: "/car",
+    component: Layout,
+    redirect: "/car/list",
+    meta: {
+      title: "车辆管理",
+      icon: "car",
+      hidden: false,
+      roles: ["ADMIN"],
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/car/index.vue"),
+        name: "CarList",
+        meta: {
+          title: "车辆管理",
+          icon: "car",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/order",
+    component: Layout,
+    redirect: "/order/toBeCreated",
+    meta: {
+      title: "订单管理",
+      icon: "order",
+      hidden: false,
+      roles: ["ADMIN"],
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "toBeCreated",
+        component: () => import("@/views/order/pages/toBeCreated/index.vue"),
+        name: "ToBeCreatedList",
+        meta: {
+          title: "待创建",
+          icon: "toBeCreated",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "underway",
+        component: () => import("@/views/order/pages/underway/index.vue"),
+        name: "UnderwayList",
+        meta: {
+          title: "进行中",
+          icon: "underway",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "completed",
+        component: () => import("@/views/order/pages/completed/index.vue"),
+        name: "CompletedList",
+        meta: {
+          title: "已完成",
+          icon: "completed",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "abnormalOrder",
+        component: () => import("@/views/order/pages/abnormalOrder/index.vue"),
+        name: "AbnormalOrderList",
+        meta: {
+          title: "异常订单",
+          icon: "abnormalOrder",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/tenant",
+    component: Layout,
+    redirect: "/tenant/list",
+    meta: {
+      title: "租客管理",
+      icon: "tenant",
+      hidden: false,
+      roles: ["ADMIN"],
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/tenant/index.vue"),
+        name: "TenantList",
+        meta: {
+          title: "租客管理",
+          icon: "tenant",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/user",
+    component: Layout,
+    redirect: "/user/list",
+    meta: {
+      title: "用户管理",
+      icon: "user",
+      hidden: false,
+      roles: ["ADMIN"],
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/user/index.vue"),
+        name: "UserList",
+        meta: {
+          title: "用户管理",
+          icon: "user",
+          hidden: false,
+          roles: ["ADMIN"],
+          keepAlive: true,
+        },
+      },
+    ],
+  },
 ];
 
 /**
