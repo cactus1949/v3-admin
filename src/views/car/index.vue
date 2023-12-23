@@ -2,6 +2,7 @@
 import { CarInfo } from "./car.type";
 import { statusList, statusMap } from "./car.data";
 import { Calendar } from "@element-plus/icons-vue";
+import { createCalendarMappings, getStatusByDate } from "./utils/index";
 
 import CarForm from "./carForm.vue";
 import RentForm from "./rentForm.vue";
@@ -63,6 +64,37 @@ function handleQuery() {
     ];
   }, 2000);
 }
+
+const calendarData = ref<any>([
+  {
+    date: ["2023-12-07", "2023-12-11"],
+    status: 1,
+  },
+  {
+    date: ["2023-12-13", "2023-12-15"],
+    status: 2,
+  },
+  {
+    date: ["2023-12-18", "2023-12-31"],
+    status: 3,
+  },
+  {
+    date: ["2024-1-3", "2024-1-8"],
+    status: 4,
+  },
+  {
+    date: ["2024-3-3", "2024-3-8"],
+    status: 4,
+  },
+]);
+
+const { dateStatusMap, disabledDatesSet } = createCalendarMappings(
+  calendarData.value
+);
+
+const computedGetStatusByDate = computed(() => {
+  return (date: Date) => getStatusByDate(date, dateStatusMap);
+});
 
 /** 重置查询 */
 function resetQuery() {
@@ -182,7 +214,7 @@ onMounted(() => {
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button type="success" @click="openDialog">添加车辆</el-button>
+        <el-button type="success" @click="openDialog()">添加车辆</el-button>
       </template>
 
       <el-table
@@ -220,7 +252,22 @@ onMounted(() => {
           <template #default="scope">
             <div class="flex items-center">
               <el-tag>{{ statusMap[scope.row.status] }}</el-tag>
-              <el-icon class="ml-[5px]"><Calendar /></el-icon>
+
+              <el-popover placement="right" :width="600" trigger="hover">
+                <template #reference>
+                  <el-icon class="ml-[5px]"><Calendar /></el-icon>
+                </template>
+                <el-calendar>
+                  <template #date-cell="{ data }">
+                    <p :class="data.isSelected ? 'is-selected' : ''">
+                      {{ data.day.split("-").slice(1).join("-") }}
+                    </p>
+                    <el-tag v-if="computedGetStatusByDate(data.date)">
+                      {{ computedGetStatusByDate(data.date) }}
+                    </el-tag>
+                  </template>
+                </el-calendar>
+              </el-popover>
             </div>
           </template>
         </el-table-column>
