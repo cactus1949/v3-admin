@@ -44,3 +44,35 @@ export interface CarInfo {
    */
   name10?: string[];
 }
+
+/**
+ * 租金 form
+ */
+export interface CarRentForm {
+  /**
+   * 租金
+   */
+  name1: string;
+  /**
+   * 押金
+   */
+  name2: string;
+  /**
+   * 优惠价
+   */
+  name3: SpecialPriceProps[];
+}
+
+/**
+ * 优惠价
+ */
+export interface SpecialPriceProps {
+  /**
+   * 优惠价
+   */
+  name1: string;
+  /**
+   * 优惠时间
+   */
+  name2: string[];
+}

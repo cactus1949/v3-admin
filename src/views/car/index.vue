@@ -4,6 +4,7 @@ import { statusList, statusMap } from "./car.data";
 import { Calendar } from "@element-plus/icons-vue";
 
 import CarForm from "./carForm.vue";
+import RentForm from "./rentForm.vue";
 
 defineOptions({
   name: "Car",
@@ -12,6 +13,7 @@ defineOptions({
 
 const queryFormRef = ref(ElForm);
 const CarFormRef = ref(CarForm);
+const RentFormRef = ref(RentForm);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
@@ -77,6 +79,11 @@ function handleSelectionChange(selection: any) {
 /** 打开表单弹窗 */
 function openDialog(item?: CarInfo) {
   CarFormRef.value.openDialog(item);
+}
+
+/** 打开租金弹窗 */
+function openRentDialog(item?: CarInfo) {
+  RentFormRef.value.openDialog(item);
 }
 
 /** 删除 */
@@ -175,7 +182,7 @@ onMounted(() => {
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button type="success" @click="openDialog()">添加车辆</el-button>
+        <el-button type="success" @click="openDialog">添加车辆</el-button>
       </template>
 
       <el-table
@@ -249,7 +256,7 @@ onMounted(() => {
               type="primary"
               size="small"
               link
-              @click="handleResetPassword"
+              @click="openRentDialog(scope.row)"
             >
               租金
             </el-button>
@@ -276,5 +283,8 @@ onMounted(() => {
 
     <!-- 新增、修改 -->
     <CarForm ref="CarFormRef" @submit="handleDialogSubmit" />
+
+    <!-- 租金 -->
+    <RentForm ref="RentFormRef" @submit="handleDialogSubmit" />
   </div>
 </template>
