@@ -2,10 +2,12 @@
 import { CarInfo } from "./car.type";
 import { statusList, statusMap } from "./car.data";
 import { Calendar } from "@element-plus/icons-vue";
-import { createCalendarMappings, getStatusByDate } from "./utils/index";
 
 import CarForm from "./carForm.vue";
 import RentForm from "./rentForm.vue";
+import CarDetail from "./carDetail.vue";
+
+import StatusCalendar from "./components/StatusCalendar/index.vue";
 
 defineOptions({
   name: "Car",
@@ -15,6 +17,7 @@ defineOptions({
 const queryFormRef = ref(ElForm);
 const CarFormRef = ref(CarForm);
 const RentFormRef = ref(RentForm);
+const CarDetailRef = ref(CarDetail);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
@@ -60,41 +63,47 @@ function handleQuery() {
         name10: [],
 
         status: "1",
+
+        calendar: [
+          {
+            date: ["2023-12-07", "2023-12-11"],
+            status: 1,
+          },
+          {
+            date: ["2023-12-13", "2023-12-15"],
+            status: 2,
+          },
+        ],
+      },
+      {
+        id: "2",
+        name1: true,
+        name2: "品牌2",
+        name3: "车型2",
+        name4: "2023",
+        name5: "轿车",
+        name6: "7",
+        name7: "2.0L",
+        name8: "自动",
+        name9: "xx",
+        name10: [],
+
+        status: "2",
+
+        calendar: [
+          {
+            date: ["2023-12-18", "2023-12-31"],
+            status: 3,
+          },
+          {
+            date: ["2024-1-3", "2024-1-8"],
+            status: 4,
+          },
+        ],
       },
     ];
   }, 2000);
 }
-
-const calendarData = ref<any>([
-  {
-    date: ["2023-12-07", "2023-12-11"],
-    status: 1,
-  },
-  {
-    date: ["2023-12-13", "2023-12-15"],
-    status: 2,
-  },
-  {
-    date: ["2023-12-18", "2023-12-31"],
-    status: 3,
-  },
-  {
-    date: ["2024-1-3", "2024-1-8"],
-    status: 4,
-  },
-  {
-    date: ["2024-3-3", "2024-3-8"],
-    status: 4,
-  },
-]);
-
-const { dateStatusMap, disabledDatesSet } = createCalendarMappings(
-  calendarData.value
-);
-
-const computedGetStatusByDate = computed(() => {
-  return (date: Date) => getStatusByDate(date, dateStatusMap);
-});
 
 /** 重置查询 */
 function resetQuery() {
@@ -116,6 +125,13 @@ function openDialog(item?: CarInfo) {
 /** 打开租金弹窗 */
 function openRentDialog(item?: CarInfo) {
   RentFormRef.value.openDialog(item);
+}
+
+/**
+ * 打开详情
+ */
+function handleDetail(item: CarInfo) {
+  CarDetailRef.value.openDialog(item);
 }
 
 /** 删除 */
@@ -257,16 +273,7 @@ onMounted(() => {
                 <template #reference>
                   <el-icon class="ml-[5px]"><Calendar /></el-icon>
                 </template>
-                <el-calendar>
-                  <template #date-cell="{ data }">
-                    <p :class="data.isSelected ? 'is-selected' : ''">
-                      {{ data.day.split("-").slice(1).join("-") }}
-                    </p>
-                    <el-tag v-if="computedGetStatusByDate(data.date)">
-                      {{ computedGetStatusByDate(data.date) }}
-                    </el-tag>
-                  </template>
-                </el-calendar>
+                <StatusCalendar :calendar-data="scope.row.calendar" />
               </el-popover>
             </div>
           </template>
@@ -287,7 +294,7 @@ onMounted(() => {
               type="primary"
               size="small"
               link
-              @click="openDialog(scope.row)"
+              @click="handleDetail(scope.row)"
             >
               详情
             </el-button>
@@ -330,6 +337,9 @@ onMounted(() => {
 
     <!-- 新增、修改 -->
     <CarForm ref="CarFormRef" @submit="handleDialogSubmit" />
+
+    <!-- 详情 -->
+    <CarDetail ref="CarDetailRef" />
 
     <!-- 租金 -->
     <RentForm ref="RentFormRef" @submit="handleDialogSubmit" />
