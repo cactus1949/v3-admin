@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UserInfo } from "./car.type";
+import { CarInfo } from "./car.type";
 import { statusList, statusMap } from "./car.data";
 import { Calendar } from "@element-plus/icons-vue";
 
@@ -25,7 +25,7 @@ const queryParams = reactive<any>({
   status: "",
 });
 
-const carList = ref<any>();
+const carList = ref<CarInfo[]>();
 
 /** 查询 */
 function handleQuery() {
@@ -44,14 +44,19 @@ function handleQuery() {
     total.value = 2;
     carList.value = [
       {
-        id: 1,
-        username: "用户名",
-        realname: "真实姓名",
-        phone: "手机号",
-        createTime: "2020-01-01",
-        createName: "创建人",
+        id: "1",
+        name1: true,
+        name2: "品牌1",
+        name3: "车型1",
+        name4: "2021",
+        name5: "轿车",
+        name6: "7",
+        name7: "2.0L",
+        name8: "自动",
+        name9: "xx",
+        name10: [],
+
         status: "1",
-        isVisible: true,
       },
     ];
   }, 2000);
@@ -70,7 +75,7 @@ function handleSelectionChange(selection: any) {
 }
 
 /** 打开表单弹窗 */
-function openDialog(item?: UserInfo) {
+function openDialog(item?: CarInfo) {
   CarFormRef.value.openDialog(item);
 }
 
@@ -193,12 +198,12 @@ onMounted(() => {
           prop="username"
           min-width="100"
         />
-        <el-table-column label="品牌" prop="realname" width="150" />
-        <el-table-column label="款式" prop="phone" width="150" />
-        <el-table-column label="年款" prop="createName" width="150" />
-        <el-table-column label="厢式" prop="createTime" width="150" />
-        <el-table-column label="座位数" prop="createTime" width="150" />
-        <el-table-column label="排量" prop="createTime" width="150" />
+        <el-table-column label="品牌" prop="name2" width="150" />
+        <el-table-column label="款式" prop="name3" width="150" />
+        <el-table-column label="年款" prop="name4" width="150" />
+        <el-table-column label="厢式" prop="name5" width="150" />
+        <el-table-column label="座位数" prop="name6" width="150" />
+        <el-table-column label="排量" prop="name7" width="150" />
         <el-table-column
           fixed="right"
           label="当日运营状态"
@@ -219,7 +224,7 @@ onMounted(() => {
           width="150"
         >
           <template #default="scope">
-            <el-switch v-model="scope.row.isVisible" />
+            <el-switch v-model="scope.row.name1" />
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="220">
