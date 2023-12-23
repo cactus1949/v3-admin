@@ -224,10 +224,26 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="关键字">
+        <el-form-item prop="keywords" label="用户名">
           <el-input
             v-model="queryParams.keywords"
-            placeholder="角色名称"
+            placeholder="请输入用户名"
+            clearable
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item prop="keywords" label="姓名">
+          <el-input
+            v-model="queryParams.keywords"
+            placeholder="请输入姓名"
+            clearable
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item prop="keywords" label="手机号">
+          <el-input
+            v-model="queryParams.keywords"
+            placeholder="请输入手机号"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -247,12 +263,6 @@ onMounted(() => {
         <el-button type="success" @click="openDialog()"
           ><i-ep-plus />新增</el-button
         >
-        <el-button
-          type="danger"
-          :disabled="ids.length === 0"
-          @click="handleDelete()"
-          ><i-ep-delete />删除</el-button
-        >
       </template>
 
       <el-table
@@ -260,32 +270,16 @@ onMounted(() => {
         v-loading="loading"
         :data="roleList"
         highlight-current-row
-        border
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="角色名称" prop="name" min-width="100" />
-        <el-table-column label="角色编码" prop="code" width="150" />
-
-        <el-table-column label="状态" align="center" width="100">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === 1" type="success">正常</el-tag>
-            <el-tag v-else type="info">禁用</el-tag>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="排序" align="center" width="80" prop="sort" />
-
+        <el-table-column type="index" width="55" label="序号" align="center" />
+        <el-table-column label="用户名" prop="name" min-width="100" />
+        <el-table-column label="姓名" prop="code" width="150" />
+        <el-table-column label="手机号" prop="code" width="150" />
+        <el-table-column label="添加人" prop="code" width="150" />
+        <el-table-column label="添加时间" prop="code" width="150" />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
-            <el-button
-              type="primary"
-              size="small"
-              link
-              @click="openMenuDialog(scope.row)"
-            >
-              <i-ep-position />分配权限
-            </el-button>
             <el-button
               type="primary"
               size="small"
@@ -293,6 +287,14 @@ onMounted(() => {
               @click="openDialog(scope.row.id)"
             >
               <i-ep-edit />编辑
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              link
+              @click="openMenuDialog(scope.row)"
+            >
+              <i-ep-position />重置密码
             </el-button>
             <el-button
               type="primary"
