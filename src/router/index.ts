@@ -84,7 +84,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "toBeCreated",
-        component: () => import("@/views/order/pages/toBeCreated/index.vue"),
+        component: () => import("@/views/order/toBeCreated/index.vue"),
         name: "ToBeCreatedList",
         meta: {
           title: "待创建",
@@ -96,7 +96,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       },
       {
         path: "underway",
-        component: () => import("@/views/order/pages/underway/index.vue"),
+        component: () => import("@/views/order/underway/index.vue"),
         name: "UnderwayList",
         meta: {
           title: "进行中",
@@ -108,7 +108,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       },
       {
         path: "completed",
-        component: () => import("@/views/order/pages/completed/index.vue"),
+        component: () => import("@/views/order/completed/index.vue"),
         name: "CompletedList",
         meta: {
           title: "已完成",
@@ -120,7 +120,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
       },
       {
         path: "abnormalOrder",
-        component: () => import("@/views/order/pages/abnormalOrder/index.vue"),
+        component: () => import("@/views/order/abnormalOrder/index.vue"),
         name: "AbnormalOrderList",
         meta: {
           title: "异常订单",
