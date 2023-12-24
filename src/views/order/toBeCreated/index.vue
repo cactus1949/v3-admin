@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { RolePageVO, RoleQuery } from "@/api/role/types";
-import { UserInfo } from "./user.type";
+import { CreateOrderForm } from "./order.type";
 
 import OrderForm from "./orderForm.vue";
+import CancelDialog from "./cancelDialog.vue";
 
 defineOptions({
   name: "OrderToBeCreated",
@@ -11,9 +12,9 @@ defineOptions({
 
 const queryFormRef = ref(ElForm);
 const OrderFormRef = ref(OrderForm);
+const CancelDialogRef = ref();
 
 const loading = ref(false);
-const ids = ref<number[]>([]);
 const total = ref(0);
 
 const queryParams = reactive<RoleQuery>({
@@ -58,68 +59,19 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 行checkbox 选中事件 */
-function handleSelectionChange(selection: any) {
-  ids.value = selection.map((item: any) => item.id);
-}
-
 /** 打开表单弹窗 */
-function openDialog(item?: UserInfo) {
+function openDialog(item?: CreateOrderForm) {
   OrderFormRef.value.openDialog(item);
 }
 
-/** 删除 */
-function handleDelete(roleId?: number) {
-  const roleIds = [roleId || ids.value].join(",");
-  if (!roleIds) {
-    ElMessage.warning("请勾选删除项");
-    return;
-  }
-
-  ElMessageBox.confirm("确认删除已选中的数据项?", "警告", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    loading.value = true;
-    // deleteRoles(roleIds)
-    //   .then(() => {
-    //     ElMessage.success("删除成功");
-    //     resetQuery();
-    //   })
-    //   .finally(() => (loading.value = false));
-    // TODO: 请求接口删除
-    setTimeout(() => {
-      ElMessage.success("删除成功");
-      resetQuery();
-      loading.value = false;
-    }, 2000);
-  });
+/**
+ * 取消预约
+ */
+function cancelOrder(item: CreateOrderForm) {
+  CancelDialogRef.value.openDialog(item);
 }
-
 function handleDialogSubmit() {
   handleQuery();
-}
-
-/** 重置密码 */
-function handleResetPassword() {
-  ElMessageBox.confirm("是否确认重置该用户密码?", "警告", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    loading.value = true;
-    // deleteRoles(roleIds)
-    //   .then(() => {
-    //     ElMessage.success("重置成功");
-    //   })
-    //   .finally(() => (loading.value = false));
-    // TODO: 请求接口
-    setTimeout(() => {
-      ElMessage.success("重置成功");
-      loading.value = false;
-    }, 2000);
-  });
 }
 
 onMounted(() => {
@@ -170,7 +122,6 @@ onMounted(() => {
         v-loading="loading"
         :data="userList"
         highlight-current-row
-        @selection-change="handleSelectionChange"
       >
         <el-table-column type="index" width="55" label="序号" align="center" />
         <el-table-column label="预约时间" prop="name1" />
@@ -196,7 +147,7 @@ onMounted(() => {
               type="primary"
               size="small"
               link
-              @click="handleDelete(scope.row.id)"
+              @click="cancelOrder(scope.row)"
             >
               取消预约
             </el-button>
@@ -215,5 +166,8 @@ onMounted(() => {
 
     <!-- 新增、修改 -->
     <OrderForm ref="OrderFormRef" @submit="handleDialogSubmit" />
+
+    <!-- 取消预约 -->
+    <CancelDialog ref="CancelDialogRef" @submit="handleDialogSubmit" />
   </div>
 </template>
