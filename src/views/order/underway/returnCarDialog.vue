@@ -11,10 +11,10 @@
       :rules="rules"
       label-width="auto"
     >
-      <el-form-item label="取消原因" prop="remark">
+      <el-form-item label="备注" prop="remark">
         <el-input
           v-model.trim="localFormData.remark"
-          placeholder="请输入取消原因"
+          placeholder="请输入备注"
           clearable
           maxlength="200"
           show-word-limit
@@ -35,12 +35,10 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
-import { CreateOrderForm } from "./order.type";
 
 const emits = defineEmits(["submit"]);
 
-const dialogType = ref("add");
-const title = ref("取消预约");
+const title = ref("还车");
 const dialogVisible = ref(false);
 
 interface cancelOrderFormProps {
@@ -59,7 +57,7 @@ const localFormData = ref<cancelOrderFormProps>({
 
 const rules = {
   remark: [
-    { required: true, message: "请输入备注", trigger: ["change", "blur"] },
+    { required: false, message: "请输入备注", trigger: ["change", "blur"] },
   ],
 };
 
@@ -74,7 +72,7 @@ function resetForm() {
   formRef.value.clearValidate();
 }
 
-function openDialog(item?: CreateOrderForm) {
+function openDialog(item?: any) {
   dialogVisible.value = true;
   localFormData.value = { id: item.id, remark: "" };
 }

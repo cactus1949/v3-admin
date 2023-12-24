@@ -35,12 +35,11 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
-import { CreateOrderForm } from "./order.type";
 
 const emits = defineEmits(["submit"]);
 
 const dialogType = ref("add");
-const title = ref("取消预约");
+const title = ref("取消");
 const dialogVisible = ref(false);
 
 interface cancelOrderFormProps {
@@ -74,7 +73,7 @@ function resetForm() {
   formRef.value.clearValidate();
 }
 
-function openDialog(item?: CreateOrderForm) {
+function openDialog(item?: any) {
   dialogVisible.value = true;
   localFormData.value = { id: item.id, remark: "" };
 }
