@@ -83,32 +83,39 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="预约时间">
-          <el-date-picker
-            v-model="queryParams.keywords"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="YYYY-MM-DD"
-            format="YYYY-MM-DD"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="预约人电话">
-          <el-input
-            v-model="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入预约人电话"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="预约时间">
+              <el-date-picker
+                v-model="queryParams.keywords"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="YYYY-MM-DD"
+                format="YYYY-MM-DD"
+                clearable
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="预约人电话">
+              <el-input
+                v-model="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入预约人电话"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="6">
+            <el-form-item class="control-btns">
+              <el-button type="primary" @click="handleQuery">搜索</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
 
@@ -118,6 +125,7 @@ onMounted(() => {
       </template>
 
       <el-table
+        stripe
         ref="dataTableRef"
         v-loading="loading"
         :data="userList"

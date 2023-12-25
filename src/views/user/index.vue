@@ -131,47 +131,57 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="用户名">
-          <el-input
-            v-model="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入用户名"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="姓名">
-          <el-input
-            v-model="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入姓名"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="手机号">
-          <el-input
-            v-model="queryParams.keywords"
-            placeholder="请输入手机号"
-            maxlength="20"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="用户名">
+              <el-input
+                v-model="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入用户名"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="姓名">
+              <el-input
+                v-model="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入姓名"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="手机号">
+              <el-input
+                v-model="queryParams.keywords"
+                placeholder="请输入手机号"
+                maxlength="20"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item class="control-btns">
+              <el-button type="primary" @click="handleQuery">搜索</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button type="success" @click="openDialog()">新增</el-button>
+        <el-button type="success" @click="openDialog()">新建用户</el-button>
       </template>
 
       <el-table
+        stripe
         ref="dataTableRef"
         v-loading="loading"
         :data="userList"

@@ -197,43 +197,55 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="车辆名称">
-          <el-input
-            v-model="queryParams.name"
-            maxlength="20"
-            placeholder="请输入车辆名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="当日运营状态">
-          <el-select
-            v-model="queryParams.status"
-            clearable
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in statusList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="车辆名称">
+              <el-input
+                class="w-[100%]"
+                v-model="queryParams.name"
+                maxlength="20"
+                placeholder="请输入车辆名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="当日运营状态">
+              <el-select
+                class="w-[100%]"
+                v-model="queryParams.status"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in statusList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="6">
+            <el-form-item class="control-btns">
+              <el-button type="primary" @click="handleQuery">搜索</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
 
     <el-card shadow="never" class="table-container">
       <template #header>
-        <el-button type="success" @click="openDialog()">添加车辆</el-button>
+        <el-button color="#3470ff" @click="openDialog()" plain
+          >添加车辆</el-button
+        >
       </template>
 
       <el-table
+        stripe
         ref="dataTableRef"
         v-loading="loading"
         :data="carList"
@@ -334,14 +346,14 @@ onMounted(() => {
         @pagination="handleQuery"
       />
     </el-card>
-
-    <!-- 新增、修改 -->
-    <CarForm ref="CarFormRef" @submit="handleDialogSubmit" />
-
-    <!-- 详情 -->
-    <CarDetail ref="CarDetailRef" />
-
-    <!-- 租金 -->
-    <RentForm ref="RentFormRef" @submit="handleDialogSubmit" />
   </div>
+
+  <!-- 新增、修改 -->
+  <CarForm ref="CarFormRef" @submit="handleDialogSubmit" />
+
+  <!-- 详情 -->
+  <CarDetail ref="CarDetailRef" />
+
+  <!-- 租金 -->
+  <RentForm ref="RentFormRef" @submit="handleDialogSubmit" />
 </template>

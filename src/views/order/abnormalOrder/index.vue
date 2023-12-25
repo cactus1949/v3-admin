@@ -67,61 +67,75 @@ onMounted(() => {
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item prop="keywords" label="承租人">
-          <el-input
-            v-model.trim="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入承租人"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="承租人电话">
-          <el-input
-            v-model.trim="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入承租人电话"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="承租车辆">
-          <el-input
-            v-model.trim="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入承租车辆"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="订单号">
-          <el-input
-            v-model.trim="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入订单号"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item prop="keywords" label="异常原因">
-          <el-input
-            v-model.trim="queryParams.keywords"
-            maxlength="20"
-            placeholder="请输入异常原因"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="承租人">
+              <el-input
+                v-model.trim="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入承租人"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="承租人电话">
+              <el-input
+                v-model.trim="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入承租人电话"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="承租车辆">
+              <el-input
+                v-model.trim="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入承租车辆"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="订单号">
+              <el-input
+                v-model.trim="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入订单号"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item prop="keywords" label="异常原因">
+              <el-input
+                v-model.trim="queryParams.keywords"
+                maxlength="20"
+                placeholder="请输入异常原因"
+                clearable
+                @keyup.enter="handleQuery"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="12">
+            <el-form-item class="control-btns">
+              <el-button type="primary" @click="handleQuery">搜索</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
 
     <el-card shadow="never" class="table-container">
       <el-table
+        stripe
         ref="dataTableRef"
         v-loading="loading"
         :data="userList"

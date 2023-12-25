@@ -21,6 +21,7 @@
   --w-e-textarea-slight-border-color: var(--el-color-primary);
   --w-e-textarea-slight-bg-color: rgb(var(--el-color-primary-rgb) 0.1);
   --w-e-textarea-selected-border-color: var(--el-color-primary);
+  --font-size: 16px;
 }
 
 $menuBg: var(--menuBg);
@@ -33,3 +34,5 @@ $subMenuActiveText: var(--subMenuActiveText);
 $subMenuHover: var(--subMenuHover);
 
 $sideBarWidth: 240px;
+
+$fontSize: var(--font-size);
