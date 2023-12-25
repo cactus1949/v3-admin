@@ -2,7 +2,7 @@
 import { RolePageVO, RoleQuery } from "@/api/role/types";
 
 defineOptions({
-  name: "OrderUnderway",
+  name: "OrderCompleted",
   inheritAttrs: false,
 });
 
