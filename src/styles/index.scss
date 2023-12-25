@@ -97,6 +97,12 @@
           background: rgb(241 247 251 / 50%) !important;
         }
       }
+
+      .el-button {
+        &.del-btn {
+          color: #fa3434;
+        }
+      }
     }
   }
 }
@@ -112,5 +118,36 @@
 
   &:hover {
     color: rgb(32 160 255);
+  }
+}
+
+// el-tag 状态
+.el-tag {
+  &.car-status-tag {
+    width: 64px;
+    height: 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 2px;
+  }
+
+  &.status-1 {
+    color: #3470ff;
+    background: rgb(52 112 255 / 8%);
+  }
+
+  &.status-2 {
+    color: #fa9034;
+    background: rgb(250 138 52 / 8%);
+  }
+
+  &.status-3 {
+    color: #00a612;
+    background: rgb(0 166 18 / 8%);
+  }
+
+  &.status-4 {
+    color: #fa3434;
+    background: rgb(250 52 52 / 8%);
   }
 }

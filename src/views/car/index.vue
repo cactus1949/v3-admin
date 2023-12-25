@@ -101,6 +101,58 @@ function handleQuery() {
           },
         ],
       },
+      {
+        id: "2",
+        name1: true,
+        name2: "品牌2",
+        name3: "车型2",
+        name4: "2023",
+        name5: "轿车",
+        name6: "7",
+        name7: "2.0L",
+        name8: "自动",
+        name9: "xx",
+        name10: [],
+
+        status: "3",
+
+        calendar: [
+          {
+            date: ["2023-12-18", "2023-12-31"],
+            status: 3,
+          },
+          {
+            date: ["2024-1-3", "2024-1-8"],
+            status: 4,
+          },
+        ],
+      },
+      {
+        id: "2",
+        name1: true,
+        name2: "品牌2",
+        name3: "车型2",
+        name4: "2023",
+        name5: "轿车",
+        name6: "7",
+        name7: "2.0L",
+        name8: "自动",
+        name9: "xx",
+        name10: [],
+
+        status: "4",
+
+        calendar: [
+          {
+            date: ["2023-12-18", "2023-12-31"],
+            status: 3,
+          },
+          {
+            date: ["2024-1-3", "2024-1-8"],
+            status: 4,
+          },
+        ],
+      },
     ];
   }, 2000);
 }
@@ -279,7 +331,9 @@ onMounted(() => {
         >
           <template #default="scope">
             <div class="flex items-center">
-              <el-tag>{{ statusMap[scope.row.status] }}</el-tag>
+              <el-tag :class="`status-${scope.row.status} car-status-tag`">{{
+                statusMap[scope.row.status]
+              }}</el-tag>
 
               <el-popover placement="right" :width="600" trigger="hover">
                 <template #reference>
@@ -329,6 +383,7 @@ onMounted(() => {
             <el-button
               type="primary"
               size="small"
+              class="del-btn"
               link
               @click="handleDelete(scope.row.id)"
             >
