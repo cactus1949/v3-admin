@@ -15,7 +15,9 @@
     width: $sideBarWidth !important;
     height: 100%;
     overflow: hidden;
-    background-color: $menuBg;
+    // background-color: $menuBg;
+    background: url("../assets/images/sidebar-bg.png") no-repeat;
+    background-size: cover;
     transition: width 0.28s;
 
     // reset element-ui css
@@ -59,18 +61,31 @@
       width: 100% !important;
       height: 100%;
       border: none;
+
+      --el-menu-item-font-size: 18px;
+
+      .el-menu-item {
+        margin-top: 18px;
+        border-radius: 4px;
+      }
+
+      .el-sub-menu {
+        margin-top: 18px;
+      }
     }
 
     // menu hover
     .submenu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: $menuHover !important;
+        background: $menuHover !important;
       }
     }
 
+    .el-menu-item.is-active,
     .is-active > .el-sub-menu__title {
       color: $subMenuActiveText !important;
+      background: $menuHover !important;
     }
 
     & .nest-menu .el-sub-menu > .el-sub-menu__title,
@@ -79,7 +94,7 @@
       background-color: $subMenuBg !important;
 
       &:hover {
-        background-color: $subMenuHover !important;
+        background: $subMenuHover !important;
       }
     }
   }
@@ -218,7 +233,7 @@
   .el-menu-item {
     &:hover {
       // you can use $subMenuHover
-      background-color: $menuHover !important;
+      background: $menuHover !important;
     }
   }
 

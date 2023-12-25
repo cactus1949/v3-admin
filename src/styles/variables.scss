@@ -1,13 +1,21 @@
 // 全局SCSS变量
 
 :root {
-  --menuBg: #304156;
-  --menuText: #bfcbd9;
-  --menuActiveText: #409eff;
-  --menuHover: #263445;
-  --subMenuBg: #1f2d3d;
+  --menuBg: #fff0;
+  --menuText: #fffc;
+  --menuActiveText: #fff;
+  --menuHover: linear-gradient(
+    270deg,
+    rgb(255 255 255 / 6%) 0%,
+    rgb(255 255 255 / 20%) 100%
+  );
+  --subMenuBg: #fff0;
   --subMenuActiveText: #f4f4f5;
-  --subMenuHover: #001528;
+  --subMenuHover: linear-gradient(
+    270deg,
+    rgb(255 255 255 / 6%) 0%,
+    rgb(255 255 255 / 20%) 100%
+  );
 
   // wang-editor textarea
   --w-e-textarea-slight-border-color: var(--el-color-primary);
@@ -24,4 +32,4 @@ $subMenuBg: var(--subMenuBg);
 $subMenuActiveText: var(--subMenuActiveText);
 $subMenuHover: var(--subMenuHover);
 
-$sideBarWidth: 210px;
+$sideBarWidth: 240px;

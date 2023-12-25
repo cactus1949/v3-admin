@@ -2,7 +2,7 @@ const defaultSettings: AppSettings = {
   title: "vue3-element-admin",
   version: "v2.7.0",
   showSettings: true,
-  tagsView: true,
+  tagsView: false,
   fixedHeader: true,
   sidebarLogo: true,
   layout: "left",

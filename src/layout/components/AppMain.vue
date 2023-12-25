@@ -26,7 +26,7 @@ const tagsViewStore = useTagsViewStore();
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
   overflow: hidden;
-  background-color: var(--el-bg-color-page);
+  background-color: #f6fafc;
 }
 
 .fixed-header + .app-main {

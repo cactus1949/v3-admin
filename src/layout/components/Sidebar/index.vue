@@ -27,7 +27,7 @@ watch(
 <template>
   <div
     :class="{ 'has-logo': sidebarLogo }"
-    class="menu-wrap"
+    class="menu-wrap px-[12px]"
     v-if="layout !== 'mix'"
   >
     <logo v-if="sidebarLogo" :collapse="!appStore.sidebar.opened" />
@@ -66,20 +66,20 @@ watch(
     z-index: 99;
     width: 100% !important;
     height: 50px;
-    background-color: $menuBg;
+    // background-color: $menuBg;
 
     :deep(.header) {
       display: flex;
       width: 100%;
       // 顶部模式全局变量修改
-      --el-menu-item-height: 50px;
+      --el-menu-item-height: 48px;
 
       .logo-wrap {
         width: $sideBarWidth;
       }
 
       .el-menu {
-        background-color: $menuBg;
+        // background-color: $menuBg;
 
         .el-menu-item {
           color: $menuText;
@@ -97,10 +97,10 @@ watch(
   .left-menu {
     display: inline-block;
     width: $sideBarWidth;
-    background-color: $menuBg;
+    // background-color: $menuBg;
 
     :deep(.el-menu) {
-      background-color: $menuBg;
+      // background-color: $menuBg;
 
       .el-menu-item {
         color: $menuText;

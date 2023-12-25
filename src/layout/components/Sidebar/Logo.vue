@@ -11,24 +11,23 @@ defineProps({
   },
 });
 
-const logo = ref(new URL(`../../../assets/logo.png`, import.meta.url).href);
+const logo = ref(
+  new URL(`../../../assets/login/logo.png`, import.meta.url).href
+);
 </script>
 
 <template>
-  <div
-    class="w-full h-[50px] bg-gray-800 dark:bg-[var(--el-bg-color-overlay)] logo-wrap"
-  >
+  <div class="w-full h-[130px] logo-wrap">
     <transition name="sidebarLogoFade">
       <router-link
-        v-if="collapse"
         key="collapse"
         class="h-full w-full flex items-center justify-center"
         to="/"
       >
-        <img v-if="settingsStore.sidebarLogo" :src="logo" class="w-5 h-5" />
+        <img :src="logo" class="w-[113px]" />
       </router-link>
 
-      <router-link
+      <!-- <router-link
         v-else
         key="expand"
         class="h-full w-full flex items-center justify-center"
@@ -38,7 +37,7 @@ const logo = ref(new URL(`../../../assets/logo.png`, import.meta.url).href);
         <span class="ml-3 text-white text-sm font-bold">
           {{ defaultSettings.title }}</span
         >
-      </router-link>
+      </router-link> -->
     </transition>
   </div>
 </template>

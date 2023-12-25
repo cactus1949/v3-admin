@@ -160,7 +160,7 @@ function toggleSideBar() {
   }
 
   // 顶部模式全局变量修改
-  --el-menu-item-height: 50px;
+  --el-menu-item-height: 48px;
 }
 
 .mobile.isTop {
