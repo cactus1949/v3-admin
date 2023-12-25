@@ -1,129 +1,116 @@
 <template>
   <div class="login-container">
-    <!-- 顶部 -->
-    <div class="absolute top-0 flex items-center justify-end px-5 h-20 w-full">
-      <el-switch
-        v-model="isDark"
-        inline-prompt
-        :active-icon="IconEpMoon"
-        :inactive-icon="IconEpSunny"
-        active-color="var(--el-fill-color-dark)"
-        inactive-color="var(--el-color-primary)"
-        @change="handleThemeChange"
-      />
-      <lang-select class="ml-2 cursor-pointer" />
-    </div>
     <!-- 登录表单 -->
-    <el-card
-      class="z-1 !border-none w-100 !bg-transparent !rounded-4% <sm:w-83"
-    >
-      <div class="text-center relative">
-        <h2>{{ title }}</h2>
-        <el-tag class="ml-2 absolute top-0 right-0">{{ version }}</el-tag>
-      </div>
-      <el-form
-        ref="loginFormRef"
-        :model="loginData"
-        :rules="loginRules"
-        class="login-form"
-      >
-        <el-form-item prop="username">
-          <div class="p-2">
-            <svg-icon icon-class="user" />
-          </div>
-          <el-input
-            ref="username"
-            v-model="loginData.username"
-            class="flex-1"
-            size="large"
-            :placeholder="$t('login.username')"
-            name="username"
-          />
-        </el-form-item>
-
-        <el-tooltip
-          :disabled="isCapslock === false"
-          content="Caps lock is On"
-          placement="right"
+    <div class="login-content">
+      <div class="login-form-wrap">
+        <div class="text-center relative">
+          <!-- <h2>{{ title }}</h2> -->
+          <img src="../../assets/login/logo.png" alt="logo" class="w-[156px]" />
+        </div>
+        <el-form
+          ref="loginFormRef"
+          :model="loginData"
+          :rules="loginRules"
+          class="login-form"
         >
-          <el-form-item prop="password">
-            <span class="p-2">
-              <svg-icon icon-class="password" />
-            </span>
+          <el-form-item prop="username">
+            <div class="p-2">
+              <svg-icon icon-class="user" />
+            </div>
             <el-input
-              v-model="loginData.password"
+              ref="username"
+              v-model="loginData.username"
               class="flex-1"
-              :placeholder="$t('login.password')"
-              :type="passwordVisible === false ? 'password' : 'input'"
               size="large"
-              name="password"
-              @keyup="checkCapslock"
+              :placeholder="$t('login.username')"
+              name="username"
+            />
+          </el-form-item>
+
+          <el-tooltip
+            :disabled="isCapslock === false"
+            content="Caps lock is On"
+            placement="right"
+          >
+            <el-form-item prop="password">
+              <span class="p-2">
+                <svg-icon icon-class="password" />
+              </span>
+              <el-input
+                v-model="loginData.password"
+                class="flex-1"
+                :placeholder="$t('login.password')"
+                :type="passwordVisible === false ? 'password' : 'input'"
+                size="large"
+                name="password"
+                @keyup="checkCapslock"
+                @keyup.enter="handleLogin"
+              />
+              <span class="mr-2" @click="passwordVisible = !passwordVisible">
+                <svg-icon
+                  :icon-class="passwordVisible === false ? 'eye' : 'eye-open'"
+                  class="cursor-pointer"
+                />
+              </span>
+            </el-form-item>
+          </el-tooltip>
+
+          <!-- 验证码 -->
+          <el-form-item prop="captchaCode">
+            <span class="p-2">
+              <svg-icon icon-class="captcha" />
+            </span>
+
+            <el-input
+              v-model="loginData.captchaCode"
+              auto-complete="off"
+              :placeholder="$t('login.captchaCode')"
+              class="w-[60%]"
               @keyup.enter="handleLogin"
             />
-            <span class="mr-2" @click="passwordVisible = !passwordVisible">
-              <svg-icon
-                :icon-class="passwordVisible === false ? 'eye' : 'eye-open'"
-                class="cursor-pointer"
-              />
-            </span>
+
+            <div class="captcha">
+              <el-image
+                :src="captchaBase64"
+                @click="getCaptcha"
+                class="w-[120px] h-[48px] cursor-pointer"
+              >
+                <template #error>
+                  <div class="image-slot">
+                    <i-ep-picture />
+                  </div>
+                </template>
+              </el-image>
+            </div>
           </el-form-item>
-        </el-tooltip>
 
-        <!-- 验证码 -->
-        <el-form-item prop="captchaCode">
-          <span class="p-2">
-            <svg-icon icon-class="captcha" />
-          </span>
-
-          <el-input
-            v-model="loginData.captchaCode"
-            auto-complete="off"
-            :placeholder="$t('login.captchaCode')"
-            class="w-[60%]"
-            @keyup.enter="handleLogin"
-          />
-
-          <div class="captcha">
-            <el-image
-              :src="captchaBase64"
-              @click="getCaptcha"
-              class="w-[120px] h-[48px] cursor-pointer"
-            >
-              <template #error>
-                <div class="image-slot">
-                  <i-ep-picture />
-                </div>
-              </template>
-            </el-image>
-          </div>
-        </el-form-item>
-
-        <el-button
-          :loading="loading"
-          type="primary"
-          class="w-full"
-          @click.prevent="handleLogin"
-          >{{ $t("login.login") }}
-        </el-button>
-
+          <el-button
+            :loading="loading"
+            type="primary"
+            class="w-full h-[72px] text-[24px]"
+            @click.prevent="handleLogin"
+            >{{ $t("login.login") }}
+          </el-button>
+        </el-form>
         <!-- 账号密码提示 -->
-        <div class="mt-10 text-sm">
-          <span>{{ $t("login.username") }}: admin</span>
-          <span class="ml-4"> {{ $t("login.password") }}: 123456</span>
+        <div class="text-center absolute bottom-[40px] w-[100%]">
+          <span class="text-[18px] text-[#C2C7CC]"
+            >登录即代表同意《鑫泰豪车隐私权政策》</span
+          >
         </div>
-      </el-form>
-    </el-card>
+      </div>
+      <div class="login-bg">
+        <h1 class="title">{{ title }}</h1>
+      </div>
+    </div>
 
     <!-- ICP备案 -->
     <div
-      class="absolute bottom-1 text-[10px] text-center"
+      class="absolute bottom-1 text-[18px] text-center"
       v-show="useAppStore().device == 'desktop'"
     >
-      <p>
-        Copyright © 2021 - 2023 youlai.tech All Rights Reserved. 有来技术
-        版权所有
-      </p>
-      <p>皖ICP备20006496号-3</p>
+      <p>Copyright © 2023 xxxx</p>
+      <p>xxxxxxx</p>
     </div>
   </div>
 </template>
@@ -131,10 +118,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import router from "@/router";
-import LangSelect from "@/components/LangSelect/index.vue";
 import SvgIcon from "@/components/SvgIcon/index.vue";
-import IconEpSunny from "~icons/ep/sunny";
-import IconEpMoon from "~icons/ep/moon";
 import { useSettingsStore } from "@/store/modules/settings";
 
 // 状态管理依赖
@@ -293,15 +277,52 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.dark .login-container {
-  background: url("@/assets/images/login-bg-dark.jpg") no-repeat center right;
-}
-
 .login-container {
-  @apply w-full h-full flex-center;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // @apply w-full h-full flex-center;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
-  background: url("@/assets/images/login-bg.jpg") no-repeat center right;
+  background: url("@/assets/login/login-bg.png") no-repeat;
+  background-size: cover;
+
+  .login-content {
+    display: flex;
+    width: 60vw;
+    height: 68vh;
+    overflow: hidden;
+    border-radius: 30px;
+
+    .login-form-wrap {
+      position: relative;
+      width: 40%;
+      padding: 36px;
+      padding-top: 92px;
+      background-color: white;
+    }
+
+    .login-bg {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      width: 60%;
+      background: url("@/assets/login/form-bg.png") no-repeat;
+      background-color: #2d95f8;
+      background-size: cover;
+
+      .title {
+        position: absolute;
+        top: 37%;
+        font-size: 36px;
+        font-weight: 300;
+        line-height: 50px;
+        color: #fff;
+        letter-spacing: 10px;
+      }
+    }
+  }
 
   .login-form {
     padding: 30px 10px;
@@ -330,14 +351,20 @@ onMounted(() => {
 }
 
 .el-form-item {
+  height: 72px;
   background: var(--el-input-bg-color);
   border: 1px solid var(--el-border-color);
   border-radius: 5px;
+
+  svg {
+    font-size: 30px;
+  }
 }
 
 :deep(.el-input) {
   .el-input__wrapper {
     padding: 0;
+    font-size: 24px;
     background-color: transparent;
     box-shadow: none;
 
