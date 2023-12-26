@@ -11,8 +11,8 @@
       :rules="rules"
       label-width="100px"
     >
-      <el-form-item label="上架状态" prop="name1">
-        <el-radio-group v-model="localFormData.name1">
+      <el-form-item label="上架状态" prop="status">
+        <el-radio-group v-model="localFormData.status">
           <el-radio
             v-for="(item, index) in onSaleOptions"
             :key="`onSale-${index}`"
@@ -21,32 +21,36 @@
           >
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="品牌" prop="name2">
+      <el-form-item label="品牌" prop="brand">
         <el-input
           maxlength="20"
-          v-model.trim="localFormData.name2"
+          v-model.trim="localFormData.brand"
           placeholder="请输入品牌"
           clearable
         />
       </el-form-item>
-      <el-form-item label="款式" prop="name3">
+      <el-form-item label="款式" prop="style">
         <el-input
           maxlength="20"
-          v-model.trim="localFormData.name3"
+          v-model.trim="localFormData.style"
           placeholder="请输入款式"
           clearable
         />
       </el-form-item>
-      <el-form-item label="年款" prop="name4">
+      <el-form-item label="年款" prop="modelYear">
         <el-input
           maxlength="20"
-          v-model.trim="localFormData.name4"
+          v-model.trim="localFormData.modelYear"
           placeholder="请输入年款"
           clearable
         />
       </el-form-item>
-      <el-form-item label="厢式" prop="name5">
-        <el-select v-model="localFormData.name5" placeholder="请选择" clearable>
+      <el-form-item label="厢式" prop="boxType">
+        <el-select
+          v-model="localFormData.boxType"
+          placeholder="请选择"
+          clearable
+        >
           <el-option
             :value="item.label"
             v-for="(item, index) in boxTypeOptions"
@@ -55,28 +59,28 @@
           >
         </el-select>
       </el-form-item>
-      <el-form-item label="座位数" prop="name6">
+      <el-form-item label="座位数" prop="seats">
         <el-input
           maxlength="20"
-          v-model.trim="localFormData.name6"
+          v-model.trim="localFormData.seats"
           placeholder="请输入座位数"
           clearable
         >
           <template #append>座</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="排量" prop="name7">
+      <el-form-item label="排量" prop="displacement">
         <el-input
           maxlength="20"
-          v-model.trim="localFormData.name7"
+          v-model.trim="localFormData.displacement"
           placeholder="请输入排量"
           clearable
         >
           <template #append>L</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="排挡" prop="name8">
-        <el-select v-model="localFormData.name8" placeholder="请选择" clearable>
+      <el-form-item label="排挡" prop="gear">
+        <el-select v-model="localFormData.gear" placeholder="请选择" clearable>
           <el-option
             :value="item.label"
             v-for="(item, index) in gearTypeOptions"
@@ -85,13 +89,13 @@
           >
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="name9">
+      <el-form-item label="备注" prop="remark">
         <el-input
           type="textarea"
           :rows="2"
           show-word-limit
           maxlength="200"
-          v-model.trim="localFormData.name9"
+          v-model.trim="localFormData.remark"
           placeholder="请输入备注"
           clearable
         />
@@ -112,9 +116,9 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
-import { CarInfo } from "./car.type";
 import { boxTypeOptions, gearTypeOptions, onSaleOptions } from "./car.data";
 import MultiUpload from "@/components/Upload/MultiUpload.vue";
+import { CarForm } from "@/api/car/types";
 
 const emits = defineEmits(["submit"]);
 
@@ -127,25 +131,15 @@ const title = computed(() => {
 const dialogVisible = ref(false);
 
 const formRef = ref();
-const addFormDataInit = shallowRef({
-  name1: true,
-  name2: "",
-  name3: "",
-  name4: "",
-  name5: "",
-  name6: "",
-  name7: "",
-  name8: "",
-  name9: "",
-});
-const localFormData = ref<CarInfo>({
+const addFormDataInit = shallowRef({});
+const localFormData = ref<CarForm>({
   ...addFormDataInit.value,
 });
 
 const rules = reactive({
-  name1: [{ required: true, message: "请选择上架状态", trigger: "blur" }],
-  name2: [{ required: true, message: "请输入品牌", trigger: "blur" }],
-  name3: [{ required: true, message: "请输入款式", trigger: "blur" }],
+  status: [{ required: true, message: "请选择上架状态", trigger: "blur" }],
+  brand: [{ required: true, message: "请输入品牌", trigger: "blur" }],
+  style: [{ required: true, message: "请输入款式", trigger: "blur" }],
 });
 
 function emitClose() {
@@ -159,7 +153,7 @@ function resetForm() {
   formRef.value.clearValidate();
 }
 
-function openDialog(item?: CarInfo) {
+function openDialog(item?: CarForm) {
   dialogVisible.value = true;
   if (item) {
     localFormData.value = { ...item };

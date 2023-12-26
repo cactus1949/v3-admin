@@ -62,12 +62,18 @@ export interface CarPageVO {
    * 款式
    */
   style?: string;
+  /**
+   * 备注
+   */
+  remark?: string;
 }
 
 /**
  * 车辆表单类型
  */
-export interface CarForm {
-  avatar?: string;
-  deptId?: number;
+export interface CarForm extends CarPageVO {
+  /**
+   * 备注
+   */
+  remark?: string;
 }

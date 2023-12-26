@@ -85,10 +85,10 @@ export const gearTypeOptions: OptionType[] = [
 export const onSaleOptions: OptionType[] = [
   {
     label: "上架",
-    value: true,
+    value: 0,
   },
   {
     label: "下架",
-    value: false,
+    value: 1,
   },
 ];

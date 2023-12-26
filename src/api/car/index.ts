@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { CarPageVO, CarQuery } from "./types";
+import { CarForm, CarPageVO, CarQuery } from "./types";
 
 /**
  * 获取车辆分页列表
@@ -12,6 +12,19 @@ export function getCarPage(
 ): AxiosPromise<PageResult<CarPageVO[]>> {
   return request({
     url: "/carInformation/getPageList",
+    method: "post",
+    data: data,
+  });
+}
+
+/**
+ * 修改车辆
+ *
+ * @param data
+ */
+export function updateCar(data: CarForm) {
+  return request({
+    url: "/carInformation/update",
     method: "post",
     data: data,
   });
