@@ -24,13 +24,13 @@ const tagsViewStore = useTagsViewStore();
   width: 100%;
 
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh);
   overflow: hidden;
   background-color: #f6fafc;
 }
 
 .fixed-header + .app-main {
-  padding-top: 34px;
+  padding-top: 70px;
 }
 
 .hasTagsView {
