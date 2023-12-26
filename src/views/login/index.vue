@@ -55,35 +55,6 @@
             </el-form-item>
           </el-tooltip>
 
-          <!-- 验证码 -->
-          <el-form-item prop="captchaCode">
-            <span class="p-2">
-              <svg-icon icon-class="captcha" />
-            </span>
-
-            <el-input
-              v-model="loginData.captchaCode"
-              auto-complete="off"
-              :placeholder="$t('login.captchaCode')"
-              class="w-[60%]"
-              @keyup.enter="handleLogin"
-            />
-
-            <div class="captcha">
-              <el-image
-                :src="captchaBase64"
-                @click="getCaptcha"
-                class="w-[120px] h-[48px] cursor-pointer"
-              >
-                <template #error>
-                  <div class="image-slot">
-                    <i-ep-picture />
-                  </div>
-                </template>
-              </el-image>
-            </div>
-          </el-form-item>
-
           <el-button
             :loading="loading"
             type="primary"
@@ -127,23 +98,11 @@ import { useAppStore } from "@/store/modules/app";
 
 // API依赖
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
-import { getCaptchaApi } from "@/api/auth";
 import { LoginData } from "@/api/auth/types";
 
 const settingsStore = useSettingsStore();
 
-const { title, version } = settingsStore;
-/**
- * 明亮/暗黑主题切换
- */
-const isDark = ref<boolean>(settingsStore.theme === "dark");
-const handleThemeChange = (isDark: any) => {
-  useToggle(isDark);
-  settingsStore.changeSetting({
-    key: "theme",
-    value: isDark ? "dark" : "light",
-  });
-};
+const { title } = settingsStore;
 
 /**
  * 根据屏幕宽度切换设备模式
@@ -162,7 +121,6 @@ watchEffect(() => {
 const loading = ref(false); // 按钮loading
 const isCapslock = ref(false); // 是否大写锁定
 const passwordVisible = ref(false); // 密码是否可见
-const captchaBase64 = ref(); // 验证码图片Base64字符串
 const loginFormRef = ref(ElForm); // 登录表单ref
 
 const loginData = ref<LoginData>({
@@ -195,13 +153,6 @@ const loginRules = computed(() => {
         message: `${prefix}${t("login.password")}`,
       },
     ],
-    captchaCode: [
-      {
-        required: true,
-        trigger: "blur",
-        message: `${prefix}${t("login.captchaCode")}`,
-      },
-    ],
   };
 });
 
@@ -214,16 +165,6 @@ function checkCapslock(e: any) {
 }
 
 /**
- * 获取验证码
- */
-function getCaptcha() {
-  getCaptchaApi().then(({ data }) => {
-    loginData.value.captchaKey = data.captchaKey;
-    captchaBase64.value = data.captchaBase64;
-  });
-}
-
-/**
  * 登录
  */
 const route = useRoute();
@@ -231,10 +172,12 @@ const userStore = useUserStore();
 function handleLogin() {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
+      console.log("login start");
       loading.value = true;
       userStore
         .login(loginData.value)
         .then(() => {
+          console.log("login success");
           const query: LocationQuery = route.query;
 
           const redirect = (query.redirect as LocationQueryValue) ?? "/";
@@ -251,10 +194,7 @@ function handleLogin() {
 
           router.push({ path: redirect, query: otherQueryParams });
         })
-        .catch(() => {
-          // 验证失败，重新生成验证码
-          getCaptcha();
-        })
+        .catch(() => {})
         .finally(() => {
           loading.value = false;
         });
@@ -263,8 +203,6 @@ function handleLogin() {
 }
 
 onMounted(() => {
-  getCaptcha();
-
   // 主题初始化
   const theme = useSettingsStore().theme;
   useSettingsStore().changeSetting({ key: "theme", value: theme });
