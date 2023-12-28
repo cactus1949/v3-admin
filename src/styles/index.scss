@@ -131,23 +131,57 @@
     border-radius: 2px;
   }
 
-  &.status-1 {
-    color: #3470ff;
-    background: rgb(52 112 255 / 8%);
+  &.statusTag- {
+    // 待租赁
+    &0 {
+      color: #00a612;
+      background-color: rgb(0 166 18 / 8%);
+    }
+    // 租赁中
+    &1 {
+      color: #3470ff;
+      background-color: rgb(52 112 255 / 8%);
+    }
+    // 已预约
+    &3 {
+      color: #fa9034;
+      background-color: rgb(250 138 52 / 8%);
+    }
+    // 已下架
+    &2 {
+      color: #fa3434;
+      background-color: rgb(250 52 52 / 8%);
+    }
+  }
+}
+
+.el-calendar {
+  .el-calendar-table .el-calendar-day {
+    padding: 0;
+
+    .calendar-cell {
+      height: 100%;
+      padding: 8px;
+    }
   }
 
-  &.status-2 {
-    color: #fa9034;
-    background: rgb(250 138 52 / 8%);
-  }
-
-  &.status-3 {
-    color: #00a612;
-    background: rgb(0 166 18 / 8%);
-  }
-
-  &.status-4 {
-    color: #fa3434;
-    background: rgb(250 52 52 / 8%);
+  // （0：待租赁，1：租赁中，2：已下架，3：已预约）
+  .status- {
+    // 待租赁
+    &0 {
+      background-color: #ebf9ed;
+    }
+    // 租赁中
+    &1 {
+      background-color: #f0f4ff;
+    }
+    // 已预约
+    &3 {
+      background-color: #fff6f0;
+    }
+    // 已下架
+    &2 {
+      background-color: #fff0f0;
+    }
   }
 }

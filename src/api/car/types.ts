@@ -121,11 +121,11 @@ export interface carRentTimeItem {
   /**
    * 开始时间
    */
-  startTime: string;
+  startTime?: string;
   /**
    * 结束时间
    */
-  endTime: string;
+  endTime?: string;
   /**
    * 优惠价
    */

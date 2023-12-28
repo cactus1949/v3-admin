@@ -5,10 +5,6 @@ import { generateStatusMap } from "@/utils";
  */
 export const statusList: OptionType[] = [
   {
-    label: "全部",
-    value: "",
-  },
-  {
     label: "待租赁",
     value: 0,
   },

@@ -90,7 +90,7 @@ export function setCarRent(data: CarRentForm) {
 /**
  * 获取 租金日历
  */
-export function getCarRentById(id: string) {
+export function getCarRentById(id: string): AxiosPromise<CarRentForm> {
   return request({
     url: `/carRent/info/${id}`,
     method: "get",

@@ -6,7 +6,10 @@
     @close="emitClose"
   >
     <el-form ref="formRef" label-width="100px">
-      <StatusCalendar :calendarData="localFormData?.operateStatusList" />
+      <StatusCalendar
+        :calendarData="localFormData?.operateStatusList"
+        :priceCalendar="priceCalendar"
+      />
       <el-row>
         <el-col :span="12">
           <el-form-item label="上架状态" prop="name1">
@@ -86,8 +89,8 @@ import { ref, defineEmits } from "vue";
 import { CarInfo } from "./car.type";
 
 import StatusCalendar from "./components/StatusCalendar/index.vue";
-import { ReturnCarInfo } from "@/api/car/types";
-import { getCarInfoById } from "@/api/car";
+import { ReturnCarInfo, carRentTimeItem } from "@/api/car/types";
+import { getCarInfoById, getCarRentById } from "@/api/car";
 
 const emits = defineEmits(["submit"]);
 
@@ -120,6 +123,7 @@ function resetForm() {
 function openDialog(item: CarInfo) {
   dialogVisible.value = true;
   returnCarInfo(item.id as string);
+  getCarRent(item.id as string);
 }
 
 function returnCarInfo(id: string): Promise<ReturnCarInfo> {
@@ -127,6 +131,24 @@ function returnCarInfo(id: string): Promise<ReturnCarInfo> {
     const { data } = await getCarInfoById(id);
     localFormData.value = data;
     resolve(data);
+  });
+}
+
+const priceCalendar = reactive<{
+  rent: number | string;
+  carRentTimeList: carRentTimeItem[];
+}>({
+  rent: 0,
+  carRentTimeList: [],
+});
+
+function getCarRent(id: string) {
+  return new Promise<void>(async (resolve) => {
+    const { data } = await getCarRentById(id);
+    const { rent, carRentTimeList } = data;
+    priceCalendar.carRentTimeList = carRentTimeList;
+    priceCalendar.rent = rent;
+    resolve();
   });
 }
 

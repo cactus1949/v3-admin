@@ -16,7 +16,7 @@ export function createCalendarMappings(
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split("T")[0];
 
-      dateStatusMap.set(dateStr, statusMap[item[statusName]]);
+      dateStatusMap.set(dateStr, item[statusName]);
 
       // 标记特定状态的日期为禁用
       disabledDatesSet.add(dateStr);

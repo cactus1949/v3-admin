@@ -216,11 +216,11 @@ onMounted(() => {
           <template #default="scope">
             <div class="flex items-center">
               <el-tag
-                :class="`status-${scope.row.operateStatus} car-status-tag`"
+                :class="`statusTag-${scope.row.operateStatus} car-status-tag`"
                 >{{ statusMap[scope.row.operateStatus] }}</el-tag
               >
 
-              <el-popover placement="right" :width="600" trigger="hover">
+              <el-popover placement="right" :width="600" trigger="click">
                 <template #reference>
                   <el-icon class="ml-[5px]"><Calendar /></el-icon>
                 </template>
