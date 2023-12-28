@@ -5,7 +5,14 @@ import { returnPictureItem } from "../file/types";
  */
 export interface CarQuery extends PageQuery {
   carName?: string;
-  operateStatus?: number;
+}
+
+/**
+ * 运营状态item
+ */
+export interface operateStatusItem {
+  dateList: string[];
+  operateStatus: number;
 }
 
 /**
@@ -48,6 +55,10 @@ export interface CarPageVO {
    * 运营状态：（0：待租赁，1：租赁中，2：已下架，3：已预约）
    */
   operateStatus?: number;
+  /**
+   * 运营状态列表
+   */
+  operateStatusList?: operateStatusItem[];
   /**
    * 图片链接
    */

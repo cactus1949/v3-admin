@@ -6,7 +6,7 @@
     @close="emitClose"
   >
     <el-form ref="formRef" label-width="100px">
-      <StatusCalendar :calendarData="calendarData" />
+      <StatusCalendar :calendarData="localFormData?.operateStatusList" />
       <el-row>
         <el-col :span="12">
           <el-form-item label="上架状态" prop="name1">

@@ -14,28 +14,36 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { createCalendarMappings, getStatusByDate } from "./utils/index";
+import { operateStatusItem } from "@/api/car/types";
 
 defineOptions({
   name: "StatusCalendar",
 });
 
-interface calendarDataProps {
-  date: string[];
-  status: number;
-}
-
 const props = withDefaults(
   defineProps<{
-    calendarData: calendarDataProps[];
+    calendarData: operateStatusItem[];
   }>(),
   {
     calendarData: () => [],
   }
 );
-
-const { dateStatusMap } = createCalendarMappings(props.calendarData);
-
-const computedGetStatusByDate = computed(() => {
-  return (date: Date) => getStatusByDate(date, dateStatusMap);
+const state = reactive({
+  dateStatusMap: new Map<string, string>(),
+  disabledDatesSet: new Set<string>(),
 });
+
+// 监听 calendarData 的变化，并更新 dateStatusMap 和 disabledDatesSet
+watchEffect(() => {
+  const mappings = createCalendarMappings(props.calendarData, {
+    dateName: "dateList",
+    statusName: "operateStatus",
+  });
+  state.dateStatusMap = mappings.dateStatusMap;
+  state.disabledDatesSet = mappings.disabledDatesSet;
+});
+
+const computedGetStatusByDate = (date: Date) => {
+  return getStatusByDate(date, state.dateStatusMap);
+};
 </script>

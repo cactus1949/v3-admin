@@ -1,27 +1,28 @@
-export const statusMap: Record<number, string> = {
-  1: "状态1",
-  2: "状态2",
-  3: "状态3",
-  4: "状态4",
-};
+import { statusMap } from "@/views/car/car.data";
 
-export function createCalendarMappings(calendarData: any) {
+export function createCalendarMappings(
+  calendarData: any,
+  { dateName = "dateList", statusName = "status" }
+) {
+  console.log(calendarData, dateName, statusName);
   const dateStatusMap = new Map<string, string>();
   const disabledDatesSet = new Set<string>();
 
   calendarData.forEach((item: any) => {
-    const start = new Date(item.date[0]);
-    const end = new Date(item.date[1]);
+    const start = new Date(item[dateName][0]);
+    const end = new Date(item[dateName][1]);
+    console.log(start, end);
 
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split("T")[0];
 
-      dateStatusMap.set(dateStr, statusMap[item.status]);
+      dateStatusMap.set(dateStr, statusMap[item[statusName]]);
 
       // 标记特定状态的日期为禁用
       disabledDatesSet.add(dateStr);
     }
   });
+  console.log(dateStatusMap, disabledDatesSet);
 
   return { dateStatusMap, disabledDatesSet };
 }
