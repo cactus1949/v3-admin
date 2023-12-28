@@ -99,6 +99,7 @@ import { useAppStore } from "@/store/modules/app";
 // API依赖
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
 import { LoginData } from "@/api/auth/types";
+import { sha256 } from "js-sha256";
 
 const settingsStore = useSettingsStore();
 
@@ -125,7 +126,7 @@ const loginFormRef = ref(ElForm); // 登录表单ref
 
 const loginData = ref<LoginData>({
   username: "admin",
-  password: "123456",
+  password: "abc123456",
 });
 
 const { t } = useI18n();
@@ -175,7 +176,10 @@ function handleLogin() {
       console.log("login start");
       loading.value = true;
       userStore
-        .login(loginData.value)
+        .login({
+          ...loginData.value,
+          password: sha256(loginData.value.password),
+        })
         .then(() => {
           console.log("login success");
           const query: LocationQuery = route.query;

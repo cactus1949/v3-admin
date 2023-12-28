@@ -26,15 +26,14 @@ export const useUserStore = defineStore("user", () => {
    */
   function login(loginData: LoginData) {
     return new Promise<void>((resolve, reject) => {
-      // loginApi(loginData)
-      //   .then((response) => {
-      //     const { tokenType, accessToken } = response.data;
-      //     token.value = tokenType + " " + accessToken; // Bearer eyJhbGciOiJIUzI1NiJ9.xxx.xxx
-      //     resolve();
-      //   })
-      //   .catch((error) => {
-      //     reject(error);
-      //   });
+      loginApi(loginData).then((response) => {
+        // const { tokenType, accessToken } = response.data;
+        // token.value = tokenType + " " + accessToken; // Bearer eyJhbGciOiJIUzI1NiJ9.xxx.xxx
+        // resolve();
+      });
+      // .catch((error) => {
+      //   reject(error);
+      // });
       const response = {
         accessToken:
           "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjE2YWJkNTlkOTAxNzQwZDliYmI3ZjczODBhZDkyNzNhIiwidXNlcklkIjoyLCJ1c2VybmFtZSI6ImFkbWluIiwiZGVwdElkIjoxLCJkYXRhU2NvcGUiOjEsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjkxMTAzMzgyfQ.P4cuIfmPepl3HuguhMS7NXn5a7IUPpsLbmtA_rHOhHk",
