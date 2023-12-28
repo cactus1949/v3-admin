@@ -2,7 +2,7 @@
   <el-drawer
     v-model="dialogVisible"
     :title="title"
-    width="500px"
+    size="50%"
     @close="emitClose"
   >
     <el-form
@@ -50,6 +50,7 @@
           v-model="localFormData.boxType"
           placeholder="请选择"
           clearable
+          class="w-[100%]"
         >
           <el-option
             :value="item.label"
@@ -80,7 +81,12 @@
         </el-input>
       </el-form-item>
       <el-form-item label="排挡" prop="gear">
-        <el-select v-model="localFormData.gear" placeholder="请选择" clearable>
+        <el-select
+          v-model="localFormData.gear"
+          placeholder="请选择"
+          clearable
+          class="w-[100%]"
+        >
           <el-option
             :value="item.label"
             v-for="(item, index) in gearTypeOptions"
@@ -101,7 +107,7 @@
         />
       </el-form-item>
       <el-form-item label="车辆照片">
-        <multi-upload v-model="multiPicUrls" />
+        <multi-upload v-model="localFormData.pictureList" />
       </el-form-item>
     </el-form>
 
@@ -118,11 +124,11 @@
 import { ref, defineEmits } from "vue";
 import { boxTypeOptions, gearTypeOptions, onSaleOptions } from "./car.data";
 import MultiUpload from "@/components/Upload/MultiUpload.vue";
-import { CarForm } from "@/api/car/types";
+import { CarForm, CarInfo, ReturnCarInfo } from "@/api/car/types";
+import { addCar, getCarInfoById, updateCar } from "@/api/car";
+import { returnPictureItem } from "@/api/file/types";
 
 const emits = defineEmits(["submit"]);
-
-const multiPicUrls = ref<string[]>([]);
 
 const dialogType = ref("add");
 const title = computed(() => {
@@ -131,7 +137,9 @@ const title = computed(() => {
 const dialogVisible = ref(false);
 
 const formRef = ref();
-const addFormDataInit = shallowRef({});
+const addFormDataInit = shallowRef({
+  status: 0,
+});
 const localFormData = ref<CarForm>({
   ...addFormDataInit.value,
 });
@@ -153,10 +161,22 @@ function resetForm() {
   formRef.value.clearValidate();
 }
 
-function openDialog(item?: CarForm) {
+async function openDialog(item?: CarInfo) {
   dialogVisible.value = true;
   if (item) {
-    localFormData.value = { ...item };
+    const data = await returnCarInfo(item.id);
+
+    // 处理图片
+    let urlList: string[] = [];
+    const { pictureList } = data;
+    if (pictureList && pictureList.length > 0) {
+      urlList = pictureList.map((o: returnPictureItem) => o.pictureName);
+    }
+
+    localFormData.value = {
+      ...data,
+      pictureList: urlList,
+    };
     dialogType.value = "edit";
   } else {
     dialogType.value = "add";
@@ -164,10 +184,24 @@ function openDialog(item?: CarForm) {
 }
 
 function handleSubmit() {
-  // TODO: 修改 添加 提交
-  console.log("提交数据", localFormData.value);
-  emitClose();
-  emits("submit");
+  formRef.value.validate((valid: boolean) => {
+    if (valid) {
+      let method = dialogType.value === "add" ? addCar : updateCar;
+      let msg = dialogType.value === "add" ? "新增" : "修改";
+      method(localFormData.value).then(() => {
+        ElMessage.success(`${msg}成功`);
+        emitClose();
+        emits("submit");
+      });
+    }
+  });
+}
+
+function returnCarInfo(id: string): Promise<ReturnCarInfo> {
+  return new Promise(async (resolve) => {
+    const { data } = await getCarInfoById(id);
+    resolve(data);
+  });
 }
 
 defineExpose({

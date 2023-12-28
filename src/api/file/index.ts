@@ -7,11 +7,11 @@ import { FileInfo } from "./types";
  *
  * @param file
  */
-export function uploadFileApi(file: File): AxiosPromise<FileInfo> {
+export function uploadFileApi(file: File): AxiosPromise<string> {
   const formData = new FormData();
   formData.append("file", file);
   return request({
-    url: "/api/v1/files",
+    url: "/minio/uploadMinioFile",
     method: "post",
     data: formData,
     headers: {

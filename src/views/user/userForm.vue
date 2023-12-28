@@ -11,10 +11,10 @@
       :rules="rules"
       label-width="100px"
     >
-      <el-form-item label="用户名" prop="username">
+      <el-form-item label="用户名" prop="name">
         <el-input
           maxlength="20"
-          v-model="localFormData.username"
+          v-model="localFormData.name"
           placeholder="请输入用户名"
           clearable
         />
@@ -27,18 +27,18 @@
           clearable
         />
       </el-form-item>
-      <el-form-item label="姓名" prop="realname">
+      <el-form-item label="姓名" prop="username">
         <el-input
           maxlength="20"
-          v-model="localFormData.realname"
+          v-model="localFormData.username"
           placeholder="请输入姓名"
           clearable
         />
       </el-form-item>
-      <el-form-item label="手机号" prop="phone">
+      <el-form-item label="手机号" prop="mobile">
         <el-input
           maxlength="20"
-          v-model="localFormData.phone"
+          v-model="localFormData.mobile"
           placeholder="请输入手机号"
           clearable
         />
@@ -57,6 +57,9 @@
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
 import { UserInfo } from "./user.type";
+import { UserForm } from "@/api/user/types";
+import { addUser, updateUser } from "@/api/user";
+import { sha256 } from "js-sha256";
 
 const emits = defineEmits(["submit"]);
 
@@ -67,18 +70,23 @@ const title = computed(() => {
 const dialogVisible = ref(false);
 
 const formRef = ref();
-const addFormDataInit = shallowRef({
+const addFormDataInit = shallowRef<UserForm>({
   username: "",
-  realname: "",
+  name: "",
   password: "",
-  phone: "",
+  mobile: "",
+
+  status: 1,
+  gender: 1,
+  salt: "123456",
+  roleId: 0,
 });
-const localFormData = ref<UserInfo>({
+const localFormData = ref<UserForm>({
   ...addFormDataInit.value,
 });
 
 const rules = reactive({
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 });
 
@@ -104,10 +112,20 @@ function openDialog(item?: UserInfo) {
 }
 
 function handleSubmit() {
-  // TODO: 修改 添加 提交
-  console.log("提交数据", localFormData.value);
-  emitClose();
-  emits("submit");
+  const method = dialogType.value === "add" ? addUser : updateUser;
+  const msg = dialogType.value === "add" ? "新增" : "修改";
+  let params = { ...localFormData.value };
+  if (dialogType.value === "add") {
+    params = {
+      ...params,
+      password: sha256(params.password as string),
+    };
+  }
+  method(params).then(() => {
+    ElMessage.success(`${msg}成功`);
+    emitClose();
+    emits("submit");
+  });
 }
 
 defineExpose({

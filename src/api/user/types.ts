@@ -14,11 +14,18 @@ export interface UserInfo {
  * 用户查询对象类型
  */
 export interface UserQuery extends PageQuery {
-  keywords?: string;
-  status?: number;
-  deptId?: number;
-  startTime?: string;
-  endTime?: string;
+  /**
+   * 用户名
+   */
+  username: string;
+  /**
+   * 用户昵称
+   */
+  name: string;
+  /**
+   * 手机号
+   */
+  mobile: string;
 }
 
 /**
@@ -26,45 +33,45 @@ export interface UserQuery extends PageQuery {
  */
 export interface UserPageVO {
   /**
-   * 用户头像地址
-   */
-  avatar?: string;
-  /**
    * 创建时间
    */
-  createTime?: Date;
-  /**
-   * 部门名称
-   */
-  deptName?: string;
-  /**
-   * 用户邮箱
-   */
-  email?: string;
+  createTime?: string;
   /**
    * 性别
    */
-  genderLabel?: string;
+  gender?: number;
   /**
-   * 用户ID
+   * 主键
    */
   id?: number;
   /**
-   * 手机号
+   * 手机号码
    */
   mobile?: string;
   /**
-   * 用户昵称
+   * 昵称
    */
-  nickname?: string;
+  name?: string;
   /**
-   * 角色名称，多个使用英文逗号(,)分割
+   * 密码
    */
-  roleNames?: string;
+  password?: string;
   /**
-   * 用户状态(1:启用;0:禁用)
+   * 角色类型
+   */
+  roleId?: number;
+  /**
+   * 盐值
+   */
+  salt?: string;
+  /**
+   * 状态
    */
   status?: number;
+  /**
+   * 修改时间
+   */
+  updateTime?: string;
   /**
    * 用户名
    */
@@ -75,41 +82,23 @@ export interface UserPageVO {
  * 用户表单类型
  */
 export interface UserForm {
-  /**
-   * 用户头像
-   */
-  avatar?: string;
-  /**
-   * 部门ID
-   */
-  deptId?: number;
-  /**
-   * 邮箱
-   */
-  email?: string;
+  createTime?: string;
   /**
    * 性别
+   * 0：女，1：男，2: 其他 ,
    */
   gender?: number;
-  /**
-   * 用户ID
-   */
   id?: number;
   mobile?: string;
+  name?: string;
+  password?: string;
+  roleId?: number;
+  salt?: string;
   /**
-   * 昵称
-   */
-  nickname?: string;
-  /**
-   * 角色ID集合
-   */
-  roleIds?: number[];
-  /**
-   * 用户状态(1:正常;0:禁用)
+   * 状态
+   * 0：禁用，1：启用，2：锁定 ,
    */
   status?: number;
-  /**
-   * 用户名
-   */
+  updateTime?: string;
   username?: string;
 }

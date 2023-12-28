@@ -18,12 +18,12 @@ export function getUserInfoApi(): AxiosPromise<UserInfo> {
  * @param queryParams
  */
 export function getUserPage(
-  queryParams: UserQuery
+  data: UserQuery
 ): AxiosPromise<PageResult<UserPageVO[]>> {
   return request({
-    url: "/api/v1/users/page",
-    method: "get",
-    params: queryParams,
+    url: "/sysUser/getPageList",
+    method: "post",
+    data,
   });
 }
 
@@ -44,9 +44,9 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  *
  * @param data
  */
-export function addUser(data: any) {
+export function addUser(data: UserForm) {
   return request({
-    url: "/api/v1/users",
+    url: "/sysUser/add",
     method: "post",
     data: data,
   });
@@ -55,13 +55,12 @@ export function addUser(data: any) {
 /**
  * 修改用户
  *
- * @param id
  * @param data
  */
-export function updateUser(id: number, data: UserForm) {
+export function updateUser(data: UserForm) {
   return request({
-    url: "/api/v1/users/" + id,
-    method: "put",
+    url: "/sysUser/update",
+    method: "post",
     data: data,
   });
 }
@@ -81,14 +80,26 @@ export function updateUserPassword(id: number, password: string) {
 }
 
 /**
+ * 重置用户密码
+ * @param id
+ * @returns
+ */
+export function resetUserPassword(id: string) {
+  return request({
+    url: `/sysUser/resetPassword/${id}`,
+    method: "get",
+  });
+}
+
+/**
  * 删除用户
  *
- * @param ids
+ * @param id
  */
-export function deleteUsers(ids: string) {
+export function deleteUsers(id: string) {
   return request({
-    url: "/api/v1/users/" + ids,
-    method: "delete",
+    url: `/sysUser/delete/${id}`,
+    method: "post",
   });
 }
 

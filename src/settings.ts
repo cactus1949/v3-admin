@@ -1,5 +1,5 @@
 const defaultSettings: AppSettings = {
-  title: "vue3-element-admin",
+  title: "鑫泰汽车租赁后台管理系统",
   version: "v2.7.0",
   showSettings: true,
   tagsView: false,

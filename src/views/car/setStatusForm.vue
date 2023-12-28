@@ -12,38 +12,16 @@
       label-width="auto"
       label-position="top"
     >
-      <el-form-item label="租金" prop="rent">
-        <el-input
-          maxlength="20"
-          v-model.trim.number="localFormData.rent"
-          placeholder="请输入租金"
-          clearable
-          v-number-format
-        >
-          <template #append>元/日</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="押金" prop="deposit">
-        <el-input
-          maxlength="20"
-          v-model.trim.number="localFormData.deposit"
-          placeholder="请输入押金"
-          clearable
-          v-number-format
-        >
-          <template #append>元</template>
-        </el-input>
-      </el-form-item>
       <el-form-item
         v-for="(item, index) in localFormData.carRentTimeList"
         :key="`specialPrice-${index}`"
-        :label="`优惠价${index + 1}`"
+        :label="`状态${index + 1}`"
       >
         <div class="flex w-[100%] items-center">
-          <el-form-item label-width="0" :prop="'item.' + index + '.dateList'">
+          <el-form-item label-width="0" :prop="'item.' + index + '.dateRange'">
             <el-date-picker
               class="flex-1"
-              v-model="item.dateList"
+              v-model="item.dateRange"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -54,15 +32,19 @@
               @change="onDateChange(item)"
             />
           </el-form-item>
-          <el-input
-            maxlength="10"
-            placeholder="优惠价"
-            clearable
+          <el-select
             class="!w-[10em] ml-[10px]"
-            v-number-format
-            v-model.trim.number="item.preferentialPrice"
-          />
-          <span class="ml-[10px] w-[3em]">元/日</span>
+            v-model="item.operateStatus"
+            clearable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in statusList.slice(1)"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
           <el-icon class="ml-[10px] cursor-pointer" @click="addItem"
             ><CirclePlusFilled
           /></el-icon>
@@ -88,12 +70,13 @@
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
 import { CirclePlusFilled, RemoveFilled } from "@element-plus/icons-vue";
-import { getCarRentById, setCarRent } from "@/api/car";
+import { getCarRentById, getCarStatusById, setCarRent } from "@/api/car";
 import { CarInfo, CarRentForm, carRentTimeItem } from "@/api/car/types";
+import { statusList, statusMap } from "./car.data";
 
 const emits = defineEmits(["submit"]);
 
-const title = ref("设置租金");
+const title = ref("设置状态");
 const dialogVisible = ref(false);
 
 const formRef = ref();
@@ -101,34 +84,11 @@ const addCarRentItemInit = {
   preferentialPrice: "",
   startTime: "",
   endTime: "",
-  dateList: [],
+  dateRange: [],
 };
 const currentCarId = ref("");
-const addFormDataInit = {
-  carRentTimeList: [
-    {
-      preferentialPrice: "",
-      startTime: "",
-      endTime: "",
-      dateList: [],
-    },
-  ],
-  deposit: "",
-  rent: "",
-} as CarRentForm;
-const localFormData = ref<CarRentForm>({
-  carRentTimeList: [
-    {
-      preferentialPrice: "",
-      startTime: "",
-      endTime: "",
-      dateList: [],
-    },
-  ],
-  deposit: "",
-  rent: "",
-  informationId: "",
-});
+const addFormDataInit = {} as CarRentForm;
+const localFormData = ref<any>({});
 
 const rules = reactive({
   rent: [{ required: true, message: "请输入租金", trigger: "blur" }],
@@ -145,10 +105,9 @@ function addItem() {
 }
 
 function onDateChange(item: carRentTimeItem) {
-  if (item.dateList && item.dateList.length === 2) {
-    item.startTime = item.dateList[0];
-    item.endTime = item.dateList[1];
-    item.preferentialPrice = 0;
+  if (item.dateRange && item.dateRange.length === 2) {
+    item.startTime = item.dateRange[0];
+    item.endTime = item.dateRange[1];
   }
 }
 
@@ -165,26 +124,12 @@ function resetForm() {
 function openDialog(item: CarInfo) {
   dialogVisible.value = true;
   currentCarId.value = item.id;
-  getCarRent();
+  getCarStatus();
 }
 
-function getCarRent() {
+function getCarStatus() {
   return new Promise<void>(async (resolve) => {
-    const { data } = await getCarRentById(currentCarId.value);
-
-    // 处理优惠价
-    if (data.carRentTimeList?.length) {
-      data.carRentTimeList = data.carRentTimeList.map(
-        (item: carRentTimeItem) => {
-          return {
-            ...item,
-            startTime: item.dateList[0],
-            endTime: item.dateList[1],
-          };
-        }
-      );
-    }
-
+    const { data } = await getCarStatusById(currentCarId.value);
     localFormData.value = data;
     resolve();
   });
@@ -196,7 +141,7 @@ function handleSubmit() {
       let formData = { ...localFormData.value };
       formData.carRentTimeList = formData.carRentTimeList.filter(
         (item: carRentTimeItem) => {
-          return item.dateList && item.dateList.length === 2;
+          return item.dateRange && item.dateRange.length === 2;
         }
       );
 

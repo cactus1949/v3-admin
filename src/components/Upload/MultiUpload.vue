@@ -83,7 +83,7 @@ watch(
  */
 async function handleUpload(options: UploadRequestOptions): Promise<any> {
   // 上传API调用
-  const { data: fileInfo } = await uploadFileApi(options.file);
+  const { data } = await uploadFileApi(options.file);
 
   // 上传成功需手动替换文件路径为远程URL，否则图片地址为预览地址 blob:http://
   const fileIndex = fileList.value.findIndex(
@@ -91,8 +91,8 @@ async function handleUpload(options: UploadRequestOptions): Promise<any> {
   );
 
   fileList.value.splice(fileIndex, 1, {
-    name: fileInfo.name,
-    url: fileInfo.url,
+    name: options.filename,
+    url: data,
   } as UploadUserFile);
 
   emit(

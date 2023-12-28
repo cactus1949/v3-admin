@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { RolePageVO, RoleQuery } from "@/api/role/types";
 import { UserInfo } from "./user.type";
 
 import UserForm from "./userForm.vue";
+import { deleteUsers, getUserPage, resetUserPassword } from "@/api/user";
+import { UserPageVO, UserQuery } from "@/api/user/types";
 
 defineOptions({
   name: "User",
@@ -16,45 +17,33 @@ const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
 
-const queryParams = reactive<RoleQuery>({
-  pageNum: 1,
-  pageSize: 10,
+const queryParams = reactive<UserQuery>({
+  current: 1,
+  size: 10,
+  username: "",
+  mobile: "",
+  name: "",
 });
 
-const userList = ref<RolePageVO[]>();
+const userList = ref<UserPageVO[]>();
 
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  // getRolePage(queryParams)
-  //   .then(({ data }) => {
-  //     userList.value = data.list;
-  //     total.value = data.total;
-  //   })
-  //   .finally(() => {
-  //     loading.value = false;
-  //   });
-  // TODO: 请求接口获取用户列表
-  setTimeout(() => {
-    loading.value = false;
-    total.value = 2;
-    userList.value = [
-      {
-        id: 1,
-        username: "用户名",
-        realname: "真实姓名",
-        phone: "手机号",
-        createTime: "2020-01-01",
-        createName: "创建人",
-      },
-    ];
-  }, 2000);
+  getUserPage(queryParams)
+    .then(({ data }) => {
+      userList.value = data.records;
+      total.value = +data.total;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 /** 重置查询 */
 function resetQuery() {
   queryFormRef.value.resetFields();
-  queryParams.pageNum = 1;
+  queryParams.current = 1;
   handleQuery();
 }
 
@@ -69,31 +58,19 @@ function openDialog(item?: UserInfo) {
 }
 
 /** 删除 */
-function handleDelete(roleId?: number) {
-  const roleIds = [roleId || ids.value].join(",");
-  if (!roleIds) {
-    ElMessage.warning("请勾选删除项");
-    return;
-  }
-
+function handleDelete(id: string) {
   ElMessageBox.confirm("确认删除已选中的数据项?", "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   }).then(() => {
     loading.value = true;
-    // deleteRoles(roleIds)
-    //   .then(() => {
-    //     ElMessage.success("删除成功");
-    //     resetQuery();
-    //   })
-    //   .finally(() => (loading.value = false));
-    // TODO: 请求接口删除
-    setTimeout(() => {
-      ElMessage.success("删除成功");
-      resetQuery();
-      loading.value = false;
-    }, 2000);
+    deleteUsers(id)
+      .then(() => {
+        ElMessage.success("删除成功");
+        resetQuery();
+      })
+      .finally(() => (loading.value = false));
   });
 }
 
@@ -102,23 +79,18 @@ function handleDialogSubmit() {
 }
 
 /** 重置密码 */
-function handleResetPassword() {
+function handleResetPassword(id: string) {
   ElMessageBox.confirm("是否确认重置该用户密码?", "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   }).then(() => {
     loading.value = true;
-    // deleteRoles(roleIds)
-    //   .then(() => {
-    //     ElMessage.success("重置成功");
-    //   })
-    //   .finally(() => (loading.value = false));
-    // TODO: 请求接口
-    setTimeout(() => {
-      ElMessage.success("重置成功");
-      loading.value = false;
-    }, 2000);
+    resetUserPassword(id)
+      .then(() => {
+        ElMessage.success("重置成功");
+      })
+      .finally(() => (loading.value = false));
   });
 }
 
@@ -133,9 +105,9 @@ onMounted(() => {
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-row :gutter="10">
           <el-col :span="6">
-            <el-form-item prop="keywords" label="用户名">
+            <el-form-item prop="name" label="用户名">
               <el-input
-                v-model="queryParams.keywords"
+                v-model="queryParams.name"
                 maxlength="20"
                 placeholder="请输入用户名"
                 clearable
@@ -144,9 +116,9 @@ onMounted(() => {
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item prop="keywords" label="姓名">
+            <el-form-item prop="username" label="姓名">
               <el-input
-                v-model="queryParams.keywords"
+                v-model="queryParams.username"
                 maxlength="20"
                 placeholder="请输入姓名"
                 clearable
@@ -155,9 +127,9 @@ onMounted(() => {
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item prop="keywords" label="手机号">
+            <el-form-item prop="mobile" label="手机号">
               <el-input
-                v-model="queryParams.keywords"
+                v-model="queryParams.mobile"
                 placeholder="请输入手机号"
                 maxlength="20"
                 clearable
@@ -189,11 +161,11 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="index" width="55" label="序号" align="center" />
-        <el-table-column label="用户名" prop="username" min-width="100" />
-        <el-table-column label="姓名" prop="realname" width="150" />
-        <el-table-column label="手机号" prop="phone" width="150" />
-        <el-table-column label="添加人" prop="createName" width="150" />
-        <el-table-column label="添加时间" prop="createTime" width="150" />
+        <el-table-column label="用户名" prop="name" />
+        <el-table-column label="姓名" prop="username" />
+        <el-table-column label="手机号" prop="mobile" />
+        <el-table-column label="添加人" prop="createName" />
+        <el-table-column label="添加时间" prop="createTime" />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button
@@ -208,7 +180,7 @@ onMounted(() => {
               type="primary"
               size="small"
               link
-              @click="handleResetPassword"
+              @click="handleResetPassword(scope.row.id)"
             >
               重置密码
             </el-button>
@@ -227,8 +199,8 @@ onMounted(() => {
       <pagination
         v-if="total > 0"
         v-model:total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
+        v-model:page="queryParams.current"
+        v-model:limit="queryParams.size"
         @pagination="handleQuery"
       />
     </el-card>

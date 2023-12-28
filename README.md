@@ -8,13 +8,13 @@
     </a>
 </p>
 <p align="center">
- <a target="_blank" href="https://juejin.cn/post/7228990409909108793">vue3-element-admin官方文档</a> |  <a target="_blank" href="http://vue3.youlai.tech">在线预览</a> 
+ <a target="_blank" href="https://juejin.cn/post/7228990409909108793">鑫泰汽车租赁后台管理系统官方文档</a> |  <a target="_blank" href="http://vue3.youlai.tech">在线预览</a> 
 </p>
 
 
 ## 项目介绍
 
-[vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) 是基于 Vue3 + Vite4+ TypeScript5 + Element-Plus + Pinia 等最新主流技术栈构建的后台管理前端模板（配套后端源码）。
+[鑫泰汽车租赁后台管理系统](https://gitee.com/youlaiorg/鑫泰汽车租赁后台管理系统) 是基于 Vue3 + Vite4+ TypeScript5 + Element-Plus + Pinia 等最新主流技术栈构建的后台管理前端模板（配套后端源码）。
 
 项目有以下特性：
 
@@ -47,7 +47,7 @@
 
 | 项目 | Gitee                                                        | Github                                                       | GitCode                                                      |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 前端 | [vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) | [vue3-element-admin](https://github.com/youlaitech/vue3-element-admin) | [vue3-element-admin](https://gitcode.net/youlai/vue3-element-admin) |
+| 前端 | [鑫泰汽车租赁后台管理系统](https://gitee.com/youlaiorg/鑫泰汽车租赁后台管理系统) | [鑫泰汽车租赁后台管理系统](https://github.com/youlaitech/鑫泰汽车租赁后台管理系统) | [鑫泰汽车租赁后台管理系统](https://gitcode.net/youlai/鑫泰汽车租赁后台管理系统) |
 | 后端 | [youlai-boot](https://gitee.com/youlaiorg/youlai-boot)       | [youlai-boot](https://github.com/haoxianrui/youlai-boot.git) | [youlai-boot](https://gitcode.net/youlai/youlai-boot)        |
 
 ## 环境准备
@@ -63,10 +63,10 @@
 
 ```bash
 # 克隆代码
-git clone https://gitee.com/youlaiorg/vue3-element-admin.git
+git clone https://gitee.com/youlaiorg/鑫泰汽车租赁后台管理系统.git
 
 # 切换目录
-cd vue3-element-admin
+cd 鑫泰汽车租赁后台管理系统
 
 # 安装 pnpm
 npm install pnpm -g
@@ -128,7 +128,7 @@ server {
 
 - **其他问题**
 
-  如果有其他问题或者建议，建议 [ISSUE](https://gitee.com/youlaiorg/vue3-element-admin/issues/new)
+  如果有其他问题或者建议，建议 [ISSUE](https://gitee.com/youlaiorg/鑫泰汽车租赁后台管理系统/issues/new)
 
 ## 接口支持
 

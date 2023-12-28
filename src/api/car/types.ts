@@ -1,3 +1,5 @@
+import { returnPictureItem } from "../file/types";
+
 /**
  * 车辆查询对象类型
  */
@@ -37,7 +39,7 @@ export interface CarPageVO {
   /**
    * 主键
    */
-  id?: number;
+  id?: string;
   /**
    * 年款
    */
@@ -49,7 +51,7 @@ export interface CarPageVO {
   /**
    * 图片链接
    */
-  pictureList?: string[];
+  // pictureList?: string[];
   /**
    * 座位数
    */
@@ -76,4 +78,101 @@ export interface CarForm extends CarPageVO {
    * 备注
    */
   remark?: string;
+  /**
+   * 图片列表
+   */
+  pictureList?: string[];
+}
+
+export interface CarInfo extends CarPageVO {
+  /**
+   * 主键
+   */
+  id: string;
+  /**
+   * 备注
+   */
+  remark?: string;
+}
+
+export interface ReturnCarInfo extends CarPageVO {
+  /**
+   * 图片列表
+   */
+  pictureList: returnPictureItem[];
+}
+
+/**
+ * 租金日历
+ */
+export interface carRentTimeItem {
+  dateList: any; // TODO: string[]
+  /**
+   * 开始时间
+   */
+  startTime: string;
+  /**
+   * 结束时间
+   */
+  endTime: string;
+  /**
+   * 优惠价
+   */
+  preferentialPrice: string | number;
+}
+
+/**
+ * 租金form
+ */
+export interface CarRentForm {
+  carRentTimeList: carRentTimeItem[];
+  /**
+   * 押金
+   */
+  deposit: string | number;
+  /**
+   * 租金
+   */
+  rent: string | number;
+  /**
+   * 汽车id
+   */
+  informationId: string;
+}
+
+/**
+ * 状态日历
+ */
+export interface carStatusItem {
+  /**
+   * 状态
+   */
+  operateStatus: number;
+  /**
+   * 开始时间
+   */
+  operateStartTime: string;
+  /**
+   * 结束时间
+   */
+  operateEndTime: string;
+}
+
+/**
+ * 状态form
+ */
+export interface CarStatusForm {
+  carRentTimeList: carRentTimeItem[];
+  /**
+   * 押金
+   */
+  deposit: string | number;
+  /**
+   * 租金
+   */
+  rent: string | number;
+  /**
+   * 汽车id
+   */
+  informationId: string;
 }
