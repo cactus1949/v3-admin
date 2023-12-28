@@ -99,7 +99,7 @@ export interface ReturnCarInfo extends CarPageVO {
   /**
    * 图片列表
    */
-  pictureList: returnPictureItem[];
+  pictureList?: returnPictureItem[];
 }
 
 /**
