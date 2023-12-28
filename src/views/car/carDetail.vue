@@ -62,7 +62,7 @@
       </el-row>
       <el-form-item label="车辆照片">
         <el-image
-          style="width: 100px; height: 100px"
+          class="w-[150px] object-cover mr-2 mb-2"
           :src="item.pictureName"
           v-for="(item, index) in localFormData?.pictureList"
           :key="`picture-${index}`"
